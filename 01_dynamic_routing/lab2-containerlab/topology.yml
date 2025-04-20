@@ -1,0 +1,49 @@
+name: bgp
+
+topology:
+  nodes:
+    rr1:
+      kind: linux
+      image: frrouting/frr:latest
+      mgmt_ipv4: 172.20.20.11
+      binds:
+        - configs/rr1/frr.conf:/etc/frr/frr.conf
+        - configs/rr1/daemons:/etc/frr/daemons
+
+    rr2:
+      kind: linux
+      image: frrouting/frr:latest
+      mgmt_ipv4: 172.20.20.12
+      binds:
+        - configs/rr2/frr.conf:/etc/frr/frr.conf
+        - configs/rr2/daemons:/etc/frr/daemons
+
+    bb1:
+      kind: linux
+      image: frrouting/frr:latest
+      mgmt_ipv4: 172.20.20.13
+      binds:
+        - configs/bb1/frr.conf:/etc/frr/frr.conf
+        - configs/bb1/daemons:/etc/frr/daemons
+
+    client1:
+      kind: linux
+      image: frrouting/frr:latest
+      mgmt_ipv4: 172.20.20.14
+      binds:
+        - configs/client1/frr.conf:/etc/frr/frr.conf
+        - configs/client1/daemons:/etc/frr/daemons
+
+    client2:
+      kind: linux
+      image: frrouting/frr:latest
+      mgmt_ipv4: 172.20.20.15
+      binds:
+        - configs/client2/frr.conf:/etc/frr/frr.conf
+        - configs/client2/daemons:/etc/frr/daemons
+
+  links:
+    - endpoints: ["rr1:eth1", "bb1:eth1"]
+    - endpoints: ["rr2:eth1", "bb1:eth2"]
+    - endpoints: ["bb1:eth3", "client1:eth1"]
+    - endpoints: ["bb1:eth4", "client2:eth1"] 
